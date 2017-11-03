@@ -1,3 +1,4 @@
 ﻿  caddlrarncpp.cpp
+e:\c++learn\project1\project1\caddlrarncpp.cpp(20): warning C4018: “<”: 有符号/无符号不匹配
   Project1.vcxproj -> E:\C++Learn\Project1\Debug\Project1.exe
   Project1.vcxproj -> E:\C++Learn\Project1\Debug\Project1.pdb (Partial PDB)
