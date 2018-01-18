@@ -1,110 +1,79 @@
+
+// parallel-count-primes.cpp
+// compile with: /EHsc
+#include <windows.h>
+#include <ppl.h>
 #include <iostream>
-#include <string>
-#include <cstring>
-#include <vector>
-#include "time.h"
-#include "parallel_for.h"
-#include "omp.h"
-#include "blocked_range.h"
+#include <algorithm>
+#include <array>
+
+using namespace concurrency;
 using namespace std;
-using namespace tbb;
-int b = 0;
 
-class ApplyFoo
+// Calls the provided work function and returns the number of milliseconds 
+// that it takes to call that function.
+template <class Function>
+__int64 time_call(Function&& f)
 {
-	float* const my_a;
-
-public:
-	void operator()(const blocked_range<size_t>& range) const
-	{
-		float* a = my_a;
-		//cout << "a";
-		for (size_t i = range.begin(); i != range.end(); ++i)
-		{
-			//cout << "a";
-			b++;
-		}
-	}
-
-	ApplyFoo(float a[]) :my_a(a)
-	{
-		cout << "s";
-	}
-};
-
-void ParallelApplyFoo(float a[], size_t n)
-{
-	parallel_for(blocked_range<size_t>(0, n, 1), ApplyFoo(a), auto_partitioner());
+	__int64 begin = GetTickCount();
+	f();
+	return GetTickCount() - begin;
 }
 
-void fun1(size_t size) {
-	 int a = 0;
-	parallel_for(size_t(0), size, [&](size_t i)
+// Determines whether the input value is prime.
+bool is_prime(int n)
+{
+	if (n < 2)
+		return false;
+	for (int i = 2; i < n; ++i)
 	{
-		b++;
-		for (int i = 0; i<100; i++)
-			a++;
+		if ((n % i) == 0)
+			return false;
+	}
+	return true;
+}
+
+int wmain()
+{
+	// Create an array object that contains 200000 integers.
+	array<int, 200000> a;
+
+	// Initialize the array such that a[i] == i.
+	int n = 0;
+	generate(begin(a), end(a), [&] {
+		return n++;
 	});
-	
+
+	LONG prime_count;
+	__int64 elapsed;
+
+	// Use the for_each algorithm to count the number of prime numbers
+	// in the array serially.
+	prime_count = 0L;
+	elapsed = time_call([&] {
+		for_each(begin(a), end(a), [&](int n) {
+			if (is_prime(n))
+			{
+				++prime_count;
+			}
+				
+		});
+	});
+	wcout << L"serial version: " << endl
+		<< L"found " << prime_count << L" prime numbers" << endl
+		<< L"took " << elapsed << L" ms" << endl << endl;
+
+	// Use the parallel_for_each algorithm to count the number of prime numbers
+	// in the array in parallel.
+	prime_count = 0L;
+	elapsed = time_call([&] {
+		parallel_for_each(begin(a), end(a), [&](int n) {
+			if (is_prime(n))
+				InterlockedIncrement(&prime_count);
+		});
+	});
+	wcout << L"parallel version: " << endl
+		<< L"found " << prime_count << L" prime numbers" << endl
+		<< L"took " << elapsed << L" ms" << endl << endl;
 }
 
-void fun2(size_t size) {
-	 int a = 0;
-	for(int i=0;i<size;i++)
-	{
-		b++;
-		for (int i = 0; i<1000000; i++)
-			a++;
-	}
-}
-
-void fun4(size_t size) {
-	for (int i = 0; i < size; i++) {
-		b++;
-	}
-}
-//void parallel_matrix_multiply(double** m1, double** m2, double** result, size_t size)
-//{
-//	parallel_for(size_t(0), size, [&](size_t i)
-//	{
-//		for (size_t j = 0; j < size; j++)
-//		{
-//			double temp = 0;
-//			for (int k = 0; k < size; k++)
-//			{
-//				temp += m1[i][k] * m2[k][j];
-//			}
-//			result[i][j] = temp;
-//		}
-//	});
-//}
-
-void test()
-{
-	int a = 0;
-	for (int i = 0; i<100000000; i++)
-		a++;
-}
-
-void main(void) {
-	while (true)
-	{
-		clock_t t1 = clock();
-       #pragma omp parallel for
-		for (int i = 0; i<8; i++)
-			test();
-		clock_t t2 = clock();
-		std::cout << "time: " << t2 - t1 << std::endl;
-		//int start = 0;
-		//int a = 0;
-		//float xx[1000] = {0,9,8,7,6,5,4,1,1,3};
-		//start = clock();//470ms
-		////fun1(1000000);//
-		//fun2(100);//320ms
-		////fun4(6553);
-		////ParallelApplyFoo(xx,6553);
-		//int time = clock() - start;
-		////cout << b << endl;
-		//cout << time << endl;
-	}
-}
