@@ -1,12 +1,26 @@
 #include <iostream>
-#include "Windows.h"
-#include <string>
-#include <cstring>
-#include <vector>
 using namespace std;
-using namespace cv;
-void main(int argc,char *argv[])
+
+typedef unsigned char uchar;
+
+typedef struct
 {
-	printf("my name is yangxiu");
-	system("pause");
+	int handleNear;
+	int handleFar;
+	int operator[](uchar i)
+	{
+		if (i == 0) { return handleNear; }
+		else if (i == 1) { return handleFar; }
+		else { cout << "Camera handle access denied!" << endl; return -1; }
+	}
+}debug;
+
+void main()
+{
+	debug exercise;
+	exercise.handleFar = 10;
+	exercise.handleNear = 12;
+	cout << exercise[0] << endl;
+	cout << exercise[1] << endl;
 }
+
