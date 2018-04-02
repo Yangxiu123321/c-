@@ -1,12 +1,13 @@
+#include "stdio.h"
 #include <iostream>
-#include "Windows.h"
-#include <string>
-#include <cstring>
-#include <vector>
-using namespace std;
-using namespace cv;
-void main(int argc,char *argv[])
+uint32_t swap_endian(uint32_t val)
 {
-	printf("my name is yangxiu");
-	system("pause");
+	val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
+	return (val << 16) | (val >> 16);
+}
+int main()
+{
+	uint32_t test_val = 1;
+	test_val = swap_endian(test_val);
+	printf("%x",test_val);
 }
