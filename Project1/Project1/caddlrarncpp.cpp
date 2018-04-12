@@ -1,13 +1,19 @@
 #include "stdio.h"
 #include <iostream>
-uint32_t swap_endian(uint32_t val)
+#include<string.h>
+#include "Sales_item.h"
+using namespace std;
+int main(void)
 {
-	val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
-	return (val << 16) | (val >> 16);
-}
-int main()
-{
-	uint32_t test_val = 1;
-	test_val = swap_endian(test_val);
-	printf("%x",test_val);
+	Sales_item item1, item2;
+	if (item1.isbn() == item2)
+	{
+		std::cin >> item1 >> item2;
+		std::cout << item1 + item1 << std::endl;
+	}else
+	{
+		std::cerr << "Data must refer to same ISBN"
+			<< std::endl;
+		return -1;
+	}
 }
