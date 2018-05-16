@@ -1,1 +1,4 @@
-﻿  Project1.vcxproj -> F:\c++\C++Learn\Project1\x64\Debug\Project1.exe
+﻿  caddlrarncpp.cpp
+e:\c++\c++learn\project1\project1\caddlrarncpp.cpp(14): error C2065: “endl”: 未声明的标识符
+e:\c++\c++learn\project1\project1\caddlrarncpp.cpp(23): error C2065: “endl”: 未声明的标识符
+e:\c++\c++learn\project1\project1\caddlrarncpp.cpp(24): error C2065: “endl”: 未声明的标识符

@@ -1,5 +1,7 @@
 #include <iostream>
-using namespace std;
+//可以引用左操作数中的右操作数
+using std::cout;
+using std::endl;
 
 typedef unsigned char uchar;
 
