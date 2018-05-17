@@ -16,5 +16,13 @@ void main(void)
 	cout << inve1[10] << endl;
 	//inve1[11] = 20;错误，必须要已知元素才能这样操作
 	
+	//迭代器访问元素
+	vector<int>::iterator iter1 = inve1.begin();
+	cout << iter1[0] <<" "<< *iter1 << endl;
+	for (vector<int>::iterator iter2 = inve2.begin(); iter2 != inve2.end(); ++iter2)
+	{
+		*iter2 = 0;
+	}
+
 }
 
