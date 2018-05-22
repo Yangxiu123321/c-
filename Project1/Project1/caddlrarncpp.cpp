@@ -40,8 +40,24 @@ void main(void)
 	const double *cptr = &pi;
 	cout << *cptr << endl;
 
-	//创建动态数组
+	///创建动态数组
 	printf("创建动态数组:\r\n");
-
+	// 没有初始化
+	// int *pia = new int[10];
+	// 对数组元素初始化为0
+	//int *pia = new int[10]();
+	// 对const对象的动态数组初始化(必须初始化)
+	//const int *pci_ok = new const int[10]();
+	// 输入数组大小
+	size_t ndong = 0;
+	std::cout << "请输入要动态分配数组的大小:";
+	std::cin >> n;
+	int *pdong = new int[n]();
+	for (int *ptest = pdong; ptest != pdong + n; ++ptest)
+	{
+		cout << *ptest <<  endl;
+	}
+	// 数组释放
+	delete [] pdong;
 }
 
