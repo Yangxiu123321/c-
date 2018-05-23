@@ -1,5 +1,6 @@
 #include <iostream>
 #include <bitset>
+#include <vector>
 using std::bitset;
 using std::cout;
 using std::endl;
@@ -8,6 +9,7 @@ void main(void)
 {
 	//使用指针访问数组元素
 	int ia[] = { 0,2,4,6,8 };
+	const size_t iasize = 5;
 	int *ip = ia;
 	cout << *ip << endl;
 
@@ -59,5 +61,9 @@ void main(void)
 	}
 	// 数组释放
 	delete [] pdong;
+	// 使用数组初始化vector对象
+	printf("使用数组初始化vector对象:\r\n");
+	std::vector<int> iavec (ia, ia + iasize);
+	cout << iavec.at(2) << endl;
 }
 
