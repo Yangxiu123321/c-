@@ -5,15 +5,11 @@
 using namespace std;
 int main(void)
 {
-	Sales_item item1, item2;
-	if (item1.isbn() == item2)
-	{
-		std::cin >> item1 >> item2;
-		std::cout << item1 + item1 << std::endl;
-	}else
-	{
-		std::cerr << "Data must refer to same ISBN"
-			<< std::endl;
-		return -1;
-	}
+	// 多次刷新可能会导致程序执行缓慢
+	int num;
+	cin >> num;
+	// flush为刷新输出缓存区
+	cout << num << '\n' << flush;
+	cerr << "no" << endl;
+	clog << "log" << endl;
 }
