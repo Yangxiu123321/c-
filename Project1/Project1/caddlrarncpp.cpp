@@ -18,18 +18,9 @@ int main(void)
 	mapStudent.insert(std::pair<int, std::string>(2, "std_two"));
 	mapStudent.insert(std::pair<int, std::string>(3, "std_three"));
 
-	std::map<int, std::string>::iterator iter;
-	// 查找key map<key,>
-	iter = mapStudent.find(2);
-	if (iter != mapStudent.end())
-	{
-		std::cout << "find:" << iter->first << std::endl;
-		// 查看迭代器的位置
-
-	}
-	else
-	{
-		std::cout << "not find" << std::endl;
-	}
+    // count查找map中是否有key，返回1则有，返回0则没有。
+	int isKey = 0;
+	isKey = mapStudent.count(3);
+	std::cout << isKey << std::endl;
 	return 0;
 }
