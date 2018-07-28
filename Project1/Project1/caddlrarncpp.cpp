@@ -1,20 +1,28 @@
-#include <map>
-#include <string>
-#include <iostream>
+//第二种：用insert函数插入value_type数据，下面举例说明  
 
-int main(void)
+#include <map>  
+
+#include <string>  
+
+#include <iostream>  
+
+using namespace std;
+
+int main()
 {
-	// 关联容器map<索引，索引的数据> 类名;
-	std::map<int,std::string> mapStudent;
-	mapStudent.insert(std::pair<int,std::string>(1, "student_one"));
-	mapStudent.insert(std::pair<int,std::string>(2, "student_two"));
-	mapStudent.insert(std::pair<int,std::string>(3, "student_three"));
 
-	std::map<int, std::string>::iterator iter = mapStudent.begin();
-	std::map<int, std::string>::iterator itend = mapStudent.end();
-	for (; iter != itend; iter++)
-	{
-		std::cout << iter->first << ' ' << iter->second << std::endl;
-	} 
-	return 0;
+	map<int, string> mapStudent;
+
+	mapStudent.insert(map<int, string>::value_type(1, "student_one"));
+
+	mapStudent.insert(map<int, string>::value_type(2, "student_two"));
+
+	mapStudent.insert(map<int, string>::value_type(3, "student_three"));
+
+	map<int, string>::iterator iter;
+
+	for (iter = mapStudent.begin(); iter != mapStudent.end(); iter++)
+
+		cout << iter->first << ' ' << iter->second << endl;
+
 }
