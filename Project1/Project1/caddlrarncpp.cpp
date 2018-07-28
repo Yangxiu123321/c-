@@ -1,35 +1,72 @@
-//第三种：用数组方式插入数据，下面举例说明  
 
-#include <map>  
+#include <iostream>
 
-#include <string>  
+#include <string>
 
-#include <iostream>  
+#include <map>
 
 using namespace std;
 
-int main(void)
-
+typedef struct tagStudentinfo
 {
+	int      niD;
+	string   strName;
+	bool operator < (tagStudentinfo const& _A) const
+	{     //这个函数指定排序策略，按niD排序，如果niD相等的话，按strName排序
+		if (niD < _A.niD)
+		{
+			return true;
+		}
+		if (niD == _A.niD)
+		{
+           return strName.compare(_A.strName) < 0;
+		}
+		return false;
+	}
+}Studentinfo; //学生信息
 
-	map<int, string> mapStudent;
-	map<int, string> mapTeacher;
 
-	mapStudent.insert(std::pair<int,std::string>(1,"stu_one"));
-	mapStudent.insert(std::pair<int, std::string>(2, "stu_two"));
-	mapStudent.insert(std::pair<int, std::string>(3, "stu_three"));
 
-	mapTeacher.insert(std::pair<int, std::string>(1, "tea_one"));
-	mapTeacher.insert(std::pair<int, std::string>(2, "tea_two"));
-	mapTeacher.insert(std::pair<int, std::string>(3, "tea_three"));
-    
-	// 交换两个map中的数据
-	mapStudent.swap(mapTeacher);
+int main()
+{
+	int nSize;   //用学生信息映射分数
+	map<Studentinfo, int>mapStudent;
 
-	map<int, string>::iterator iter;
-	for (iter = mapTeacher.begin(); iter != mapTeacher.end(); iter++)
+
+
+	map<Studentinfo, int>::iterator iter;
+
+
+
+	Studentinfo studentinfo;
+
+
+
+	studentinfo.niD = 1;
+
+
+
+	studentinfo.strName = "student_one";
+
+
+
+	mapStudent.insert(pair<Studentinfo, int>(studentinfo, 90));
+
+
+
+	studentinfo.niD = 2;
+
+
+
+	studentinfo.strName = "student_two";
+
+
+
+	mapStudent.insert(pair<Studentinfo, int>(studentinfo, 80));
+
+	for (iter = mapStudent.begin(); iter != mapStudent.end(); iter++)
 	{
-		cout << iter->first << " " << iter->second << std::endl;
+       cout << iter->first.niD << ' ' << iter->first.strName << ' ' << iter->second << endl;
 	}
 	return 0;
 }
