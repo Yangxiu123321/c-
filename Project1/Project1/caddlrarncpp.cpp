@@ -18,28 +18,18 @@ int main(void)
 	mapStudent.insert(std::pair<int, std::string>(2, "std_two"));
 	mapStudent.insert(std::pair<int, std::string>(3, "std_three"));
 
-    // 关联容器的大小
-	int size = mapStudent.size();
-	std::cout <<"size: "<< size << std::endl;
-
-	// 数据遍历（迭代器）
-	//std::map<int, std::string>::iterator iter;
-	//for (iter = mapStudent.begin(); iter != mapStudent.end(); iter++)
-	//{
-	//	std::cout << iter->first << " " << iter->second << std::endl;
-	//}
-
-	// 数据遍历（反向迭代器）
-	//std::map<int, std::string>::reverse_iterator iter;
-	//for (iter = mapStudent.rbegin(); iter != mapStudent.rend(); iter++)
-	//{
-	//	std::cout << iter->first << " " << iter->second << std::endl;
-	//}
-
-	// 数组遍历
-	for (int index = 1; index <= size; index++)
+	std::map<int, std::string>::iterator iter;
+	// 查找key map<key,>
+	iter = mapStudent.find(2);
+	if (iter != mapStudent.end())
 	{
-		std::cout << mapStudent[index] << std::endl;
+		std::cout << "find:" << iter->first << std::endl;
+		// 查看迭代器的位置
+
+	}
+	else
+	{
+		std::cout << "not find" << std::endl;
 	}
 	return 0;
 }
