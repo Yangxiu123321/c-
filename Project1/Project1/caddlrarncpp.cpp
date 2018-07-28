@@ -1,9 +1,10 @@
+//第二种：仿函数的应用，这个时候结构体中没有直接的小于号重载，程序说明
 
 #include <iostream>
 
-#include <string>
-
 #include <map>
+
+#include <string>
 
 using namespace std;
 
@@ -11,26 +12,35 @@ typedef struct tagStudentinfo
 {
 	int      niD;
 	string   strName;
-	bool operator < (tagStudentinfo const& _A) const
-	{     //这个函数指定排序策略，按niD排序，如果niD相等的话，按strName排序
-		if (niD < _A.niD)
-		{
-			return true;
-		}
-		if (niD == _A.niD)
-		{
-           return strName.compare(_A.strName) < 0;
-		}
-		return false;
-	}
 }Studentinfo; //学生信息
 
 
 
-int main()
+class sort
 {
-	int nSize;   //用学生信息映射分数
-	map<Studentinfo, int>mapStudent;
+public:
+	bool operator() (Studentinfo const &_A, Studentinfo const &_B) const
+	{
+		if (_A.niD < _B.niD)
+			return true;
+		if (_A.niD == _B.niD)
+			return _A.strName.compare(_B.strName) < 0;
+		return false;
+	}
+
+};
+
+
+
+int main()
+
+
+
+{   //用学生信息映射分数
+
+
+
+	map<Studentinfo, int, sort>mapStudent;
 
 
 
@@ -64,9 +74,12 @@ int main()
 
 	mapStudent.insert(pair<Studentinfo, int>(studentinfo, 80));
 
+
+
 	for (iter = mapStudent.begin(); iter != mapStudent.end(); iter++)
-	{
-       cout << iter->first.niD << ' ' << iter->first.strName << ' ' << iter->second << endl;
-	}
-	return 0;
+
+
+
+		cout << iter->first.niD << ' ' << iter->first.strName << ' ' << iter->second << endl;
+
 }
