@@ -14,11 +14,13 @@ int main()
 
 	map<int, string> mapStudent;
 
-	mapStudent[1] = "student_one";
+	/// 可以任意改变同一索引号的值
+	//mapStudent[1] = "student_one";
+	//mapStudent[1] = "student_TWO";
 
-	mapStudent[2] = "student_two";
-
-	mapStudent[3] = "student_three";
+	/// 不能改变
+	mapStudent.insert(std::pair<int,std::string>(1,"stu_one"));
+	mapStudent.insert(std::pair<int, std::string>(1, "std_two"));
 
 	map<int, string>::iterator iter;
 
