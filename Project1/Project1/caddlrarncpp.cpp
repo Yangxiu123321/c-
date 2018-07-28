@@ -8,24 +8,38 @@
 
 using namespace std;
 
-int main()
+int main(void)
 
 {
 
 	map<int, string> mapStudent;
 
-	/// 可以任意改变同一索引号的值
-	//mapStudent[1] = "student_one";
-	//mapStudent[1] = "student_TWO";
-
-	/// 不能改变
 	mapStudent.insert(std::pair<int,std::string>(1,"stu_one"));
-	mapStudent.insert(std::pair<int, std::string>(1, "std_two"));
+	mapStudent.insert(std::pair<int, std::string>(2, "std_two"));
+	mapStudent.insert(std::pair<int, std::string>(3, "std_three"));
 
-	map<int, string>::iterator iter;
+    // 关联容器的大小
+	int size = mapStudent.size();
+	std::cout <<"size: "<< size << std::endl;
 
-	for (iter = mapStudent.begin(); iter != mapStudent.end(); iter++)
+	// 数据遍历（迭代器）
+	//std::map<int, std::string>::iterator iter;
+	//for (iter = mapStudent.begin(); iter != mapStudent.end(); iter++)
+	//{
+	//	std::cout << iter->first << " " << iter->second << std::endl;
+	//}
 
-		cout << iter->first << ' ' << iter->second << endl;
+	// 数据遍历（反向迭代器）
+	//std::map<int, std::string>::reverse_iterator iter;
+	//for (iter = mapStudent.rbegin(); iter != mapStudent.rend(); iter++)
+	//{
+	//	std::cout << iter->first << " " << iter->second << std::endl;
+	//}
 
+	// 数组遍历
+	for (int index = 1; index <= size; index++)
+	{
+		std::cout << mapStudent[index] << std::endl;
+	}
+	return 0;
 }
