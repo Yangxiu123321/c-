@@ -1,4 +1,4 @@
-//第二种：用insert函数插入value_type数据，下面举例说明  
+//第三种：用数组方式插入数据，下面举例说明  
 
 #include <map>  
 
@@ -9,15 +9,16 @@
 using namespace std;
 
 int main()
+
 {
 
 	map<int, string> mapStudent;
 
-	mapStudent.insert(map<int, string>::value_type(1, "student_one"));
+	mapStudent[1] = "student_one";
 
-	mapStudent.insert(map<int, string>::value_type(2, "student_two"));
+	mapStudent[2] = "student_two";
 
-	mapStudent.insert(map<int, string>::value_type(3, "student_three"));
+	mapStudent[3] = "student_three";
 
 	map<int, string>::iterator iter;
 
