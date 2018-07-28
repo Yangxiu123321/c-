@@ -13,20 +13,23 @@ int main(void)
 {
 
 	map<int, string> mapStudent;
+	map<int, string> mapTeacher;
 
 	mapStudent.insert(std::pair<int,std::string>(1,"stu_one"));
-	mapStudent.insert(std::pair<int, std::string>(2, "std_two"));
-	mapStudent.insert(std::pair<int, std::string>(3, "std_three"));
+	mapStudent.insert(std::pair<int, std::string>(2, "stu_two"));
+	mapStudent.insert(std::pair<int, std::string>(3, "stu_three"));
 
-    // erase移除map中的元素
-	// 用迭代器删除
-	map<int, std::string>::iterator iter;
+	mapTeacher.insert(std::pair<int, std::string>(1, "tea_one"));
+	mapTeacher.insert(std::pair<int, std::string>(2, "tea_two"));
+	mapTeacher.insert(std::pair<int, std::string>(3, "tea_three"));
+    
+	// 交换两个map中的数据
+	mapStudent.swap(mapTeacher);
 
-	iter = mapStudent.find(1);
-	mapStudent.erase(iter);
-	int n = mapStudent.erase(1);
-	// 整片删除
-	mapStudent.erase(mapStudent.begin(), mapStudent.end());
-	cout << mapStudent.size() << std::endl;
+	map<int, string>::iterator iter;
+	for (iter = mapTeacher.begin(); iter != mapTeacher.end(); iter++)
+	{
+		cout << iter->first << " " << iter->second << std::endl;
+	}
 	return 0;
 }
