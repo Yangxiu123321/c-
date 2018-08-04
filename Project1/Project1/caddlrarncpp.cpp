@@ -1,36 +1,35 @@
-#include <thread>
+// https://blog.csdn.net/morewindows/article/details/7421759
+//最简单的创建多线程实例
+#include <stdio.h>
 
-void do_something(int& i)
+#include <windows.h>
+
+//子线程函数
+
+DWORD WINAPI ThreadFun(LPVOID pM)
+
 {
-    ++i;
-	printf("%d\r\n",i);
+	Sleep(5000);
+	printf("子线程的线程ID号为：%d\n子线程输出Hello World\n", GetCurrentThreadId());
+
+	return 0;
+
 }
 
-struct func
-{
-    int& i;
-
-    func(int& i_):i(i_){}
-
-    void operator()()
-    {
-        for(unsigned j=0;j<1000000;++j)
-        {
-            do_something(i);
-        }
-    }
-};
-
-
-void oops()
-{
-    int some_local_state=0;
-    func my_func(some_local_state);
-    std::thread my_thread(my_func);
-	my_thread.join();
-}
+//主函数，所谓主函数其实就是主线程执行的函数。
 
 int main()
+
 {
-    oops();
+
+	printf("     最简单的创建多线程实例\n");
+
+	printf(" -- by MoreWindows( http://blog.csdn.net/MoreWindows ) --\n\n");
+
+	HANDLE handle = CreateThread(NULL, 0, ThreadFun, NULL, 0, NULL);
+	printf("start\r\n");
+	WaitForSingleObject(handle, INFINITE);
+	CloseHandle(handle);
+	printf("end\r\n");
+	return 0;
 }
