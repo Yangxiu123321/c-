@@ -1,15 +1,23 @@
-// https://blog.csdn.net/morewindows/article/details/7421759
-//最简单的创建多线程实例
+
+//子线程报数
+
 #include <stdio.h>
+
+#include <process.h>
 
 #include <windows.h>
 
+int g_nCount;
+
 //子线程函数
 
-DWORD WINAPI ThreadFun(LPVOID pM)
+unsigned int __stdcall ThreadFun(PVOID pM)
 
 {
-	printf("子线程的线程ID号为：%d\n子线程输出Hello World\n", GetCurrentThreadId());
+
+	g_nCount++;
+
+	printf("线程ID号为%4d的子线程报数%d\n", GetCurrentThreadId(), g_nCount);
 
 	return 0;
 
@@ -21,15 +29,26 @@ int main()
 
 {
 
-	printf("     最简单的创建多线程实例\n");
+	printf("     子线程报数 \n");
 
 	printf(" -- by MoreWindows( http://blog.csdn.net/MoreWindows ) --\n\n");
 
-	HANDLE handle = CreateThread(NULL, 0, ThreadFun, NULL, CREATE_SUSPENDED, NULL);
-	Sleep(5000);
-	printf("start\r\n");
-	ResumeThread(handle);
-	CloseHandle(handle);
-	printf("end\r\n");
+
+
+	const int THREAD_NUM = 10;
+
+	HANDLE handle[THREAD_NUM];
+
+
+
+	g_nCount = 0;
+
+	for (int i = 0; i < THREAD_NUM; i++)
+
+		handle[i] = (HANDLE)_beginthreadex(NULL, 0, ThreadFun, NULL, 0, NULL);
+
+	WaitForMultipleObjects(THREAD_NUM, handle, TRUE, INFINITE);
+
 	return 0;
+
 }
