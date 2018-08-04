@@ -9,7 +9,6 @@
 DWORD WINAPI ThreadFun(LPVOID pM)
 
 {
-	Sleep(5000);
 	printf("子线程的线程ID号为：%d\n子线程输出Hello World\n", GetCurrentThreadId());
 
 	return 0;
@@ -26,9 +25,10 @@ int main()
 
 	printf(" -- by MoreWindows( http://blog.csdn.net/MoreWindows ) --\n\n");
 
-	HANDLE handle = CreateThread(NULL, 0, ThreadFun, NULL, 0, NULL);
+	HANDLE handle = CreateThread(NULL, 0, ThreadFun, NULL, CREATE_SUSPENDED, NULL);
+	Sleep(5000);
 	printf("start\r\n");
-	WaitForSingleObject(handle, INFINITE);
+	ResumeThread(handle);
 	CloseHandle(handle);
 	printf("end\r\n");
 	return 0;
