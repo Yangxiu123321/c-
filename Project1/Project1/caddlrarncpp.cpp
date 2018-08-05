@@ -1,23 +1,14 @@
 #include <iostream>
+#include <vector>
 
-struct name {
-public :
-	void init()
-	{
-		w = 1;
-		s = 2;
-		a = 3;
-	}
-	int x = 10;
-private:
-	int w;
-	int a;
-	int s;
-};
+using namespace std;
 
 int main(void)
 {
-	name Yang;
-	Yang.init();
-	std::cout << Yang.x << std::endl;
+	vector<int> Bob;
+	Bob.push_back(1);
+	Bob.push_back(10);
+	Bob.pop_back();
+	int c = Bob.back();
+	std::cout << c << std::endl;
 }
