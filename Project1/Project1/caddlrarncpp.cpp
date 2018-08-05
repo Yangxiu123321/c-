@@ -1,61 +1,91 @@
 
 #include <stdio.h>
 
+#include <process.h>
+
 #include <windows.h>
 
-volatile long g_nLoginCount; //登录次数
+long g_nNum;
 
-unsigned int __stdcall Fun(void *pPM); //线程函数
+unsigned int __stdcall Fun(void *pPM);
 
-const DWORD THREAD_NUM = 50;//启动线程数
+const int THREAD_NUM = 10;
 
-DWORD WINAPI ThreadFun(void *pPM)
+//关键段变量声明
 
-{
-
-	Sleep(100); //some work should to do
-
-	InterlockedIncrement((LPLONG)&g_nLoginCount);
-
-	Sleep(50);
-
-	return 0;
-
-}
+CRITICAL_SECTION  g_csThreadParameter, g_csThreadCode;
 
 int main()
 
 {
 
-	printf("     原子操作 Interlocked系列函数的使用\n");
+	printf("     经典线程同步 关键段\n");
 
 	printf(" -- by MoreWindows( http://blog.csdn.net/MoreWindows ) --\n\n");
 
 
 
-	//重复20次以便观察多线程访问同一资源时导致的冲突
+	//关键段初始化
 
-	int num = 20;
+	InitializeCriticalSection(&g_csThreadParameter);
 
-	while (num--)
+	InitializeCriticalSection(&g_csThreadCode);
+
+
+
+	HANDLE  handle[THREAD_NUM];
+
+	g_nNum = 0;
+
+	int i = 0;
+
+	while (i < THREAD_NUM)
 
 	{
 
-		g_nLoginCount = 0;
+		EnterCriticalSection(&g_csThreadParameter);//进入子线程序号关键区域
 
-		int i;
+		handle[i] = (HANDLE)_beginthreadex(NULL, 0, Fun, &i, 0, NULL);
 
-		HANDLE  handle[THREAD_NUM];
-
-		for (i = 0; i < THREAD_NUM; i++)
-
-			handle[i] = CreateThread(NULL, 0, ThreadFun, NULL, 0, NULL);
-
-		WaitForMultipleObjects(THREAD_NUM, handle, TRUE, INFINITE);
-
-		printf("有%d个用户登录后记录结果是%d\n", THREAD_NUM, g_nLoginCount);
+		++i;
 
 	}
+
+	WaitForMultipleObjects(THREAD_NUM, handle, TRUE, INFINITE);
+
+
+
+	DeleteCriticalSection(&g_csThreadCode);
+
+	DeleteCriticalSection(&g_csThreadParameter);
+
+	return 0;
+
+}
+
+unsigned int __stdcall Fun(void *pPM)
+
+{
+
+	int nThreadNum = *(int *)pPM;
+
+	LeaveCriticalSection(&g_csThreadParameter);//离开子线程序号关键区域
+
+
+
+	Sleep(50);//some work should to do
+
+
+
+	EnterCriticalSection(&g_csThreadCode);//进入各子线程互斥区域
+
+	g_nNum++;
+
+	Sleep(0);//some work should to do
+
+	printf("线程编号为%d  全局资源值为%d\n", nThreadNum, g_nNum);
+
+	LeaveCriticalSection(&g_csThreadCode);//离开各子线程互斥区域
 
 	return 0;
 
