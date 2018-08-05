@@ -1,11 +1,23 @@
-#include <windows.h>
 #include <iostream>
+
+struct name {
+public :
+	void init()
+	{
+		w = 1;
+		s = 2;
+		a = 3;
+	}
+	int x = 10;
+private:
+	int w;
+	int a;
+	int s;
+};
 
 int main(void)
 {
-	int array[1000] = { 1,1,1 };
-	array[999] = 100;
-	ZeroMemory(array,sizeof(array));
-	std::cout << array[999] << std::endl;
-	return 0;
+	name Yang;
+	Yang.init();
+	std::cout << Yang.x << std::endl;
 }
