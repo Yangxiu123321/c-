@@ -11,23 +11,25 @@ unsigned int __stdcall Fun(void *pPM);
 
 const int THREAD_NUM = 10;
 
-//关键段变量声明
+//信号量与关键段
 
-CRITICAL_SECTION  g_csThreadParameter, g_csThreadCode;
+HANDLE            g_hThreadParameter;
+
+CRITICAL_SECTION  g_csThreadCode;
 
 int main()
 
 {
 
-	printf("     经典线程同步 关键段\n");
+	printf("     经典线程同步 信号量Semaphore\n");
 
 	printf(" -- by MoreWindows( http://blog.csdn.net/MoreWindows ) --\n\n");
 
 
 
-	//关键段初始化
+	//初始化信号量和关键段
 
-	InitializeCriticalSection(&g_csThreadParameter);
+	g_hThreadParameter = CreateSemaphore(NULL, 0, 1, NULL);//当前0个资源，最大允许1个同时访问
 
 	InitializeCriticalSection(&g_csThreadCode);
 
@@ -43,9 +45,9 @@ int main()
 
 	{
 
-		EnterCriticalSection(&g_csThreadParameter);//进入子线程序号关键区域
-
 		handle[i] = (HANDLE)_beginthreadex(NULL, 0, Fun, &i, 0, NULL);
+
+		WaitForSingleObject(g_hThreadParameter, INFINITE);//等待信号量>0
 
 		++i;
 
@@ -55,21 +57,28 @@ int main()
 
 
 
+	//销毁信号量和关键段
+
 	DeleteCriticalSection(&g_csThreadCode);
 
-	DeleteCriticalSection(&g_csThreadParameter);
+	CloseHandle(g_hThreadParameter);
+
+	for (i = 0; i < THREAD_NUM; i++)
+
+		CloseHandle(handle[i]);
 
 	return 0;
 
 }
 
+// __stdcall从右往左入栈
 unsigned int __stdcall Fun(void *pPM)
 
 {
 
 	int nThreadNum = *(int *)pPM;
 
-	LeaveCriticalSection(&g_csThreadParameter);//离开子线程序号关键区域
+	ReleaseSemaphore(g_hThreadParameter, 1, NULL);//信号量++
 
 
 
@@ -77,15 +86,15 @@ unsigned int __stdcall Fun(void *pPM)
 
 
 
-	EnterCriticalSection(&g_csThreadCode);//进入各子线程互斥区域
+	EnterCriticalSection(&g_csThreadCode);
 
-	g_nNum++;
+	++g_nNum;
 
 	Sleep(0);//some work should to do
 
 	printf("线程编号为%d  全局资源值为%d\n", nThreadNum, g_nNum);
 
-	LeaveCriticalSection(&g_csThreadCode);//离开各子线程互斥区域
+	LeaveCriticalSection(&g_csThreadCode);
 
 	return 0;
 
