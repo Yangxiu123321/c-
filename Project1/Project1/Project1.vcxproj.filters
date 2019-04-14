@@ -18,5 +18,13 @@
     <ClCompile Include="caddlrarncpp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="tmpClass.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tmpClass.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
